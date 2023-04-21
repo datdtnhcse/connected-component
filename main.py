@@ -1,11 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.ndimage import label, generate_binary_structure
+import os
+from scipy.ndimage import label
 from PIL import Image
 from matplotlib.patches import Rectangle
 
 # Load the input image using Pillow
-img = Image.open('input/input_2.png')
+img = Image.open('input/input_3.png')
 
 # Convert the image to grayscale and then to a numpy array
 img_gray = img.convert('L')
@@ -13,13 +14,14 @@ img_arr = np.array(img_gray)
 
 def bfs_index(binary_image):
     # Generate a binary structure for connectivity
-    struct = generate_binary_structure(2, 1)
+    struct = np.ones((3, 3), dtype=bool)
+
     
     # Label connected components in the binary image
     labeled, n = label(binary_image, struct)
     
     # Initialize the component index to 0
-    index = np.zeros_like(binary_image)
+    index = np.zeros_like(binary_image) 
     
     # Initialize a list to store the bounding boxes
     boxes = []
@@ -39,7 +41,7 @@ def bfs_index(binary_image):
         index[start] = i
         while queue:
             current = queue.pop(0)
-            for neighbor in np.array([[-1, 0], [0, -1], [0, 1], [1, 0]]) + current:
+            for neighbor in np.array([[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]) + current:
                 if (np.logical_and(neighbor[0] >= 0, neighbor[0] < binary_image.shape[0]) 
                     and np.logical_and(neighbor[1] >= 0, neighbor[1] < binary_image.shape[1]) 
                     and np.all(component[neighbor]) 
@@ -71,4 +73,3 @@ for i, box in enumerate(boxes):
     ax.add_patch(rect)
     ax.text(box[0][0], box[0][1], str(i+1), color='r', fontsize=8)
 plt.show()
-
