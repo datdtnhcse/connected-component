@@ -4,7 +4,7 @@ Detection of connected components in an image
 This code is an implementation of a Breadth-First Search (BFS) algorithm for indexing connected components in a binary image. It uses the Python libraries `numpy`, `matplotlib`, os, `scipy`, and `PIL` (Python Imaging Library).
 
 How to run:
-```python
+```console
 python3 -m pip install -r requirements.txt
 python3 main.py
 ```
